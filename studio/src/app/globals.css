@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+/*
+ * Studio palette. The gold and sage accents are carried over from the main
+ * Four One Five Visuals site so the tools feel like the same brand, but the
+ * surfaces are dark: generated imagery is far easier to judge against a
+ * neutral dark ground than against the site's warm paper.
+ */
+@theme {
+  --color-ink-950: #0b0b0c;
+  --color-ink-900: #121214;
+  --color-ink-850: #17171a;
+  --color-ink-800: #1e1e22;
+  --color-ink-700: #2a2a30;
+  --color-ink-600: #3a3a42;
+
+  --color-chalk: #f4efe7;
+  --color-chalk-dim: #a8a49d;
+  --color-chalk-faint: #6f6c67;
+
+  --color-gold: #c7a46a;
+  --color-gold-bright: #dfbd83;
+  --color-sage: #90b8aa;
+  --color-danger: #e2725b;
+
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+
+  --radius-card: 18px;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--color-ink-950);
+  color: var(--color-chalk);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Consistent focus ring across every interactive element. */
+*:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Dark, unobtrusive scrollbars so panels don't get bright gutters. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-ink-700) transparent;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Loading placeholder used while a job is running. */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(244, 239, 231, 0.06),
+    transparent
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer::after {
+    animation: none;
+  }
+}
