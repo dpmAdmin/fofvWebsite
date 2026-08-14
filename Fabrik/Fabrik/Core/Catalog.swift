@@ -170,6 +170,41 @@ enum Catalog {
             ]
         ),
 
+        FalModel(
+            id: "nano-banana",
+            endpointId: "fal-ai/nano-banana",
+            title: "Nano Banana",
+            blurb: "Google's fast, cheap text-to-image (Gemini 2.5 Flash Image). Great for quick drafts and social volume at ~$0.04 per image.",
+            category: .generate,
+            outputKind: .image,
+            eta: "~5s",
+            docsURL: URL(string: "https://fal.ai/models/fal-ai/nano-banana"),
+            fields: [
+                .prompt,
+                .nanoAspectRatio,
+                .numImages,
+                .seed,
+            ]
+        ),
+
+        FalModel(
+            id: "nano-banana-pro",
+            endpointId: "fal-ai/nano-banana-pro",
+            title: "Nano Banana Pro",
+            blurb: "Google's flagship image model (Gemini 3 Pro Image). Legible text in images, up to 4K, strong scene logic. ~$0.15 per image, 4K doubles it.",
+            category: .generate,
+            outputKind: .image,
+            eta: "~15s",
+            docsURL: URL(string: "https://fal.ai/models/fal-ai/nano-banana-pro"),
+            fields: [
+                .prompt,
+                .nanoAspectRatio,
+                .nanoResolution,
+                .numImages,
+                .seed,
+            ]
+        ),
+
         // MARK: Enhance
 
         FalModel(
@@ -292,6 +327,35 @@ enum Catalog {
             ]
         ),
 
+        FalModel(
+            id: "nano-banana-pro-edit",
+            endpointId: "fal-ai/nano-banana-pro/edit",
+            title: "Multi-image edit (Nano Banana Pro)",
+            blurb: "The strongest editor in the catalogue: up to ~14 reference images, 4K output, and reliable text rendering. ~$0.15 per image.",
+            category: .edit,
+            outputKind: .image,
+            eta: "~20s",
+            docsURL: URL(string: "https://fal.ai/models/fal-ai/nano-banana-pro/edit"),
+            fields: [
+                Field(
+                    name: "image_urls",
+                    label: "Source images",
+                    type: .images,
+                    help: "The first image is the one being edited; the rest act as references.",
+                    isRequired: true
+                ),
+                Field(
+                    name: "prompt",
+                    label: "Instruction",
+                    type: .multilineText,
+                    isRequired: true,
+                    placeholder: "Restyle this living room to match the mood board in the second image"
+                ),
+                .nanoResolution,
+                .seed,
+            ]
+        ),
+
         // MARK: Stage
 
         FalModel(
@@ -347,22 +411,30 @@ enum Catalog {
         // MARK: Video
 
         FalModel(
+            // Keeps the v2-era id so "Re-run" on older library entries still
+            // resolves. Note the v3 schema renamed the image field:
+            // `start_image_url`, not `image_url`.
             id: "kling-i2v",
-            endpointId: "fal-ai/kling-video/v2/master/image-to-video",
-            title: "Image to video (Kling 2 Master)",
-            blurb: "Turns a still into a cinematic clip with real camera movement. The best-looking option for listing films.",
+            endpointId: "fal-ai/kling-video/v3/pro/image-to-video",
+            title: "Image to video (Kling 3 Pro)",
+            blurb: "Turns a still into a cinematic clip with real camera movement and native audio. The best-looking option for listing films. ~$0.11/s silent, ~$0.17/s with audio.",
             category: .video,
             outputKind: .video,
             eta: "~3-5 min",
-            docsURL: URL(string: "https://fal.ai/models/fal-ai/kling-video/v2/master/image-to-video"),
+            docsURL: URL(string: "https://fal.ai/models/fal-ai/kling-video/v3/pro/image-to-video"),
             fields: [
-                .sourceImage("The still to animate. A clean, well-lit frame gives the best motion."),
+                Field(
+                    name: "start_image_url",
+                    label: "Source image",
+                    type: .image,
+                    help: "The still to animate. A clean, well-lit frame gives the best motion.",
+                    isRequired: true
+                ),
                 Field(
                     name: "prompt",
                     label: "Motion direction",
                     type: .multilineText,
-                    help: "Describe the camera move, not the room. The room is already in the image.",
-                    isRequired: true,
+                    help: "Describe the camera move, not the room. Optional, but strongly recommended.",
                     placeholder: "Slow cinematic dolly forward through the living room, gentle parallax"
                 ),
                 Field(
@@ -370,10 +442,31 @@ enum Catalog {
                     label: "Duration",
                     type: .picker,
                     defaultValue: .string("5"),
+                    options: (3...15).map { FieldOption(value: String($0), label: "\($0) seconds") }
+                ),
+                Field(
+                    name: "generate_audio",
+                    label: "Generate audio",
+                    type: .toggle,
+                    help: "Ambient sound generated with the clip. Turning it off is ~35% cheaper.",
+                    defaultValue: .bool(true)
+                ),
+                Field(
+                    name: "aspect_ratio",
+                    label: "Aspect ratio",
+                    type: .picker,
+                    defaultValue: .string("16:9"),
                     options: [
-                        FieldOption(value: "5", label: "5 seconds"),
-                        FieldOption(value: "10", label: "10 seconds"),
+                        FieldOption(value: "16:9", label: "16:9 — listing film"),
+                        FieldOption(value: "9:16", label: "9:16 — reel / story"),
+                        FieldOption(value: "1:1", label: "1:1 — feed post"),
                     ]
+                ),
+                Field(
+                    name: "end_image_url",
+                    label: "End frame (optional)",
+                    type: .image,
+                    help: "Give the clip a destination — useful for room-to-room transitions."
                 ),
                 Field(
                     name: "negative_prompt",
@@ -381,6 +474,14 @@ enum Catalog {
                     type: .text,
                     help: "Artefacts to suppress. Warping architecture is the usual failure mode.",
                     defaultValue: .string("blur, distort, warping walls, morphing furniture")
+                ),
+                Field(
+                    name: "cfg_scale",
+                    label: "Prompt adherence",
+                    type: .number,
+                    help: "Higher sticks closer to the motion direction; lower gives Kling more freedom.",
+                    defaultValue: .double(0.5),
+                    minimum: 0, maximum: 1, step: 0.05
                 ),
             ]
         ),
@@ -468,6 +569,35 @@ extension Field {
         help: "Leave blank for a new result each time. Reuse a seed to reproduce one."
     )
 
+    /// Aspect ratios shared by the Nano Banana family.
+    static let nanoAspectRatio = Field(
+        name: "aspect_ratio",
+        label: "Aspect ratio",
+        type: .picker,
+        defaultValue: .string("4:3"),
+        options: [
+            FieldOption(value: "4:3", label: "4:3 — MLS photo"),
+            FieldOption(value: "16:9", label: "16:9 — web hero"),
+            FieldOption(value: "1:1", label: "1:1 — feed post"),
+            FieldOption(value: "3:4", label: "3:4 — portrait"),
+            FieldOption(value: "9:16", label: "9:16 — reel / story"),
+            FieldOption(value: "21:9", label: "21:9 — ultrawide banner"),
+        ]
+    )
+
+    /// Output resolution for Nano Banana Pro endpoints. 4K bills at 2x.
+    static let nanoResolution = Field(
+        name: "resolution",
+        label: "Resolution",
+        type: .picker,
+        defaultValue: .string("1K"),
+        options: [
+            FieldOption(value: "1K", label: "1K"),
+            FieldOption(value: "2K", label: "2K"),
+            FieldOption(value: "4K", label: "4K — costs 2x"),
+        ]
+    )
+
     static func sourceImage(_ help: String) -> Field {
         Field(
             name: "image_url",
@@ -495,7 +625,15 @@ enum InputBuilder {
             case .null: continue
             case .string(let text) where text.isEmpty: continue
             case .array(let items) where items.isEmpty: continue
-            default: input[field.name] = value
+            default: break
+            }
+
+            // Single-image fields are edited as arrays (the picker works in
+            // lists) but fal expects one plain URL string for them.
+            if field.type == .image, let first = value.arrayValue?.first {
+                input[field.name] = first
+            } else {
+                input[field.name] = value
             }
         }
 

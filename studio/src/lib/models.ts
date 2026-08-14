@@ -153,6 +153,78 @@ export const MODELS: ModelDef[] = [
     ],
   },
 
+  {
+    id: "nano-banana",
+    endpointId: "fal-ai/nano-banana",
+    title: "Nano Banana",
+    blurb:
+      "Google's fast, cheap text-to-image (Gemini 2.5 Flash Image). Great for quick drafts and social volume at ~$0.04 per image.",
+    category: "generate",
+    outputKind: "image",
+    eta: "~5s",
+    docsUrl: "https://fal.ai/models/fal-ai/nano-banana",
+    fields: [
+      promptField,
+      {
+        name: "aspect_ratio",
+        label: "Aspect ratio",
+        type: "select",
+        defaultValue: "4:3",
+        options: [
+          { label: "4:3 — MLS photo", value: "4:3" },
+          { label: "16:9 — web hero", value: "16:9" },
+          { label: "1:1 — feed post", value: "1:1" },
+          { label: "3:4 — portrait", value: "3:4" },
+          { label: "9:16 — reel / story", value: "9:16" },
+          { label: "21:9 — ultrawide banner", value: "21:9" },
+        ],
+      },
+      numImagesField,
+      { name: "seed", label: "Seed", type: "number" },
+    ],
+  },
+  {
+    id: "nano-banana-pro",
+    endpointId: "fal-ai/nano-banana-pro",
+    title: "Nano Banana Pro",
+    blurb:
+      "Google's flagship image model (Gemini 3 Pro Image). Legible text in images, up to 4K, strong scene logic. ~$0.15 per image, 4K doubles it.",
+    category: "generate",
+    outputKind: "image",
+    eta: "~15s",
+    docsUrl: "https://fal.ai/models/fal-ai/nano-banana-pro",
+    fields: [
+      promptField,
+      {
+        name: "aspect_ratio",
+        label: "Aspect ratio",
+        type: "select",
+        defaultValue: "4:3",
+        options: [
+          { label: "4:3 — MLS photo", value: "4:3" },
+          { label: "16:9 — web hero", value: "16:9" },
+          { label: "1:1 — feed post", value: "1:1" },
+          { label: "3:4 — portrait", value: "3:4" },
+          { label: "9:16 — reel / story", value: "9:16" },
+          { label: "21:9 — ultrawide banner", value: "21:9" },
+        ],
+      },
+      {
+        name: "resolution",
+        label: "Resolution",
+        type: "select",
+        defaultValue: "1K",
+        options: [
+          { label: "1K", value: "1K" },
+          { label: "2K", value: "2K" },
+          { label: "4K — costs 2x", value: "4K" },
+        ],
+      },
+      numImagesField,
+      { name: "seed", label: "Seed", type: "number" },
+    ],
+  },
+
   // --- Enhance ------------------------------------------------------------
   {
     id: "clarity-upscaler",
@@ -280,6 +352,46 @@ export const MODELS: ModelDef[] = [
     ],
   },
 
+  {
+    id: "nano-banana-pro-edit",
+    endpointId: "fal-ai/nano-banana-pro/edit",
+    title: "Multi-image edit (Nano Banana Pro)",
+    blurb:
+      "The strongest editor in the catalogue: up to ~14 reference images, 4K output, and reliable text rendering. ~$0.15 per image.",
+    category: "edit",
+    outputKind: "image",
+    eta: "~20s",
+    docsUrl: "https://fal.ai/models/fal-ai/nano-banana-pro/edit",
+    fields: [
+      {
+        name: "image_urls",
+        label: "Source images",
+        type: "images",
+        required: true,
+        help: "The first image is the one being edited; the rest act as references.",
+      },
+      {
+        name: "prompt",
+        label: "Instruction",
+        type: "textarea",
+        required: true,
+        placeholder: "Restyle this living room to match the mood board in the second image",
+      },
+      {
+        name: "resolution",
+        label: "Resolution",
+        type: "select",
+        defaultValue: "1K",
+        options: [
+          { label: "1K", value: "1K" },
+          { label: "2K", value: "2K" },
+          { label: "4K — costs 2x", value: "4K" },
+        ],
+      },
+      { name: "seed", label: "Seed", type: "number" },
+    ],
+  },
+
   // --- Stage --------------------------------------------------------------
   {
     id: "virtual-staging",
@@ -334,34 +446,66 @@ export const MODELS: ModelDef[] = [
 
   // --- Video --------------------------------------------------------------
   {
+    // Keeps the v2-era id so "Re-run" on older library entries still resolves.
+    // Note the v3 schema renamed the image field: `start_image_url`, not
+    // `image_url` — a v2-style payload fails validation on this endpoint.
     id: "kling-i2v",
-    endpointId: "fal-ai/kling-video/v2/master/image-to-video",
-    title: "Image to video (Kling 2 Master)",
+    endpointId: "fal-ai/kling-video/v3/pro/image-to-video",
+    title: "Image to video (Kling 3 Pro)",
     blurb:
-      "Turns a still into a cinematic clip with real camera movement. The best-looking option for listing films.",
+      "Turns a still into a cinematic clip with real camera movement and native audio. The best-looking option for listing films. ~$0.11/s silent, ~$0.17/s with audio.",
     category: "video",
     outputKind: "video",
     eta: "~3-5 min",
-    docsUrl: "https://fal.ai/models/fal-ai/kling-video/v2/master/image-to-video",
+    docsUrl: "https://fal.ai/models/fal-ai/kling-video/v3/pro/image-to-video",
     fields: [
-      sourceImageField("The still to animate. A clean, well-lit frame gives the best motion."),
+      {
+        name: "start_image_url",
+        label: "Source image",
+        type: "image",
+        required: true,
+        help: "The still to animate. A clean, well-lit frame gives the best motion.",
+      },
       {
         name: "prompt",
         label: "Motion direction",
         type: "textarea",
-        required: true,
         placeholder: "Slow cinematic dolly forward through the living room, gentle parallax",
-        help: "Describe the camera move, not the room. The room is already in the image.",
+        help: "Describe the camera move, not the room. Optional, but strongly recommended.",
       },
       {
         name: "duration",
         label: "Duration",
         type: "select",
         defaultValue: "5",
+        options: Array.from({ length: 13 }, (_, i) => {
+          const seconds = String(i + 3);
+          return { label: `${seconds} seconds`, value: seconds };
+        }),
+      },
+      {
+        name: "generate_audio",
+        label: "Generate audio",
+        type: "boolean",
+        defaultValue: true,
+        help: "Ambient sound generated with the clip. Turning it off is ~35% cheaper.",
+      },
+      {
+        name: "aspect_ratio",
+        label: "Aspect ratio",
+        type: "select",
+        defaultValue: "16:9",
         options: [
-          { label: "5 seconds", value: "5" },
-          { label: "10 seconds", value: "10" },
+          { label: "16:9 — listing film", value: "16:9" },
+          { label: "9:16 — reel / story", value: "9:16" },
+          { label: "1:1 — feed post", value: "1:1" },
         ],
+      },
+      {
+        name: "end_image_url",
+        label: "End frame (optional)",
+        type: "image",
+        help: "Give the clip a destination — useful for room-to-room transitions.",
       },
       {
         name: "negative_prompt",
@@ -369,6 +513,16 @@ export const MODELS: ModelDef[] = [
         type: "text",
         defaultValue: "blur, distort, warping walls, morphing furniture",
         help: "Artefacts to suppress. Warping architecture is the usual failure mode.",
+      },
+      {
+        name: "cfg_scale",
+        label: "Prompt adherence",
+        type: "number",
+        defaultValue: 0.5,
+        min: 0,
+        max: 1,
+        step: 0.05,
+        help: "Higher sticks closer to the motion direction; lower gives Kling more freedom.",
       },
     ],
   },

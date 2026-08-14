@@ -159,15 +159,19 @@ and pass a URL.
 
 ### Verify endpoint IDs before relying on them
 
-The catalogue ships with ten models — FLUX for generation, Clarity/AuraSR for
-upscaling, Kontext for sky replacement and staging, Kling and Seedance for
-image-to-video.
+The catalogue ships with thirteen models — FLUX and the Nano Banana family
+(including Nano Banana Pro) for generation and editing, Clarity/AuraSR for
+upscaling, Kontext for sky replacement and staging, and Kling 3 Pro and
+Seedance for image-to-video.
 
-**These endpoint IDs and their input schemas were written without access to
-fal's live model gallery, and fal versions models regularly.** Before leaning on
-one for real work, open its `docsURL` and confirm the id and field names still
-match. A drifted schema shows up as either a validation error naming a field, or
-a job that completes with no files — both surface in the app with a link to the
+The Nano Banana family and Kling 3 Pro entries were verified against current
+fal schema documentation (August 2026), including v3's renamed
+`start_image_url` field. **The remaining entries — FLUX, Clarity, AuraSR,
+BiRefNet, Kontext, Seedance — were written without access to fal's live model
+gallery, and fal versions models regularly.** Before leaning on one for real
+work, open its `docsURL` and confirm the id and field names still match. A
+drifted schema shows up as either a validation error naming a field, or a job
+that completes with no files — both surface in the app with a link to the
 model's fal page.
 
 ---

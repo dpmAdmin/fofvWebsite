@@ -126,14 +126,18 @@ documented input schema. Available field types: `text`, `textarea`, `select`,
 
 ### Verify endpoint IDs before you rely on them
 
-The catalogue ships with a starting set aimed at real estate work — FLUX for
-generation, Clarity/AuraSR for upscaling, Kontext for sky replacement and
-staging, Kling and Seedance for image-to-video.
+The catalogue ships with a starting set aimed at real estate work — FLUX and
+the Nano Banana family (including Nano Banana Pro) for generation and editing,
+Clarity/AuraSR for upscaling, Kontext for sky replacement and staging, and
+Kling 3 Pro and Seedance for image-to-video.
 
-**These endpoint IDs and their input schemas were written without access to
-fal's live model gallery, and fal versions models regularly.** Before leaning on
-any of them in client work, open its `docsUrl` and confirm the endpoint ID and
-field names still match. Symptoms of a drifted schema:
+The Nano Banana family and Kling 3 Pro entries were verified against current
+fal schema documentation (August 2026), including v3's renamed
+`start_image_url` field. **The remaining entries — FLUX, Clarity, AuraSR,
+BiRefNet, Kontext, Seedance — were written without access to fal's live model
+gallery, and fal versions models regularly.** Before leaning on any of them in
+client work, open its `docsUrl` and confirm the endpoint ID and field names
+still match. Symptoms of a drifted schema:
 
 - a validation error naming a field you are sending, or one you are not
 - a job that completes but produces no files
