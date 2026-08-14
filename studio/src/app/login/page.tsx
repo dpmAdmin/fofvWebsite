@@ -48,9 +48,9 @@ function LoginForm() {
     <form onSubmit={handleSubmit} className="w-full max-w-sm">
       <div className="mb-8">
         <div className="mb-5 grid size-11 place-items-center rounded-xl bg-chalk font-extrabold tracking-tighter text-ink-950">
-          Fv
+          Fa
         </div>
-        <h1 className="text-2xl font-bold tracking-tight">FOFV Studio</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Fabrik</h1>
         <p className="mt-2 text-sm text-chalk-dim">
           Internal asset creation tools. Enter the studio password to continue.
         </p>

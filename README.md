@@ -1,15 +1,25 @@
 # Four One Five Visuals
 
-This repository holds two separate things:
+This repository holds three things:
 
-| | What it is | Where it deploys |
+| | What it is | Where it runs |
 | --- | --- | --- |
 | **Marketing site** (repo root) | The public static site | GitHub Pages |
-| **[`studio/`](studio/)** | Internal AI asset creation platform, powered by fal.ai | Vercel (or any Node host) |
+| **[`Fabrik/`](Fabrik/)** | Fabrik — native iOS + macOS asset creation app | Xcode → your devices |
+| **[`studio/`](studio/)** | Fabrik on the web — the same tool as a Next.js app | Vercel (or any Node host) |
 
-The two are independent — the studio is a Next.js app in its own folder with its
-own dependencies, and adding it changed nothing about how the marketing site
+They are independent. Adding Fabrik changed nothing about how the marketing site
 builds or deploys.
+
+**Fabrik** is the AI asset creation tool: generate imagery, enhance and upscale
+photos, replace skies, virtually stage empty rooms, and turn stills into
+cinematic clips — all through [fal.ai](https://fal.ai).
+
+- The **native app** uses *your own* fal key, stored in the Keychain. No server,
+  no hosting. → [`Fabrik/README.md`](Fabrik/README.md)
+  <br>⚠️ It has never been compiled — it was written without access to Xcode. See its README.
+- The **web app** keeps one fal key server-side behind a password, for people who
+  should not need their own fal account. → [`studio/README.md`](studio/README.md)
 
 ---
 
@@ -39,23 +49,3 @@ Your site will publish at your GitHub Pages URL. You can later connect `fouronef
 - Replace the email in `index.html` near the contact section.
 - Swap placeholder visual blocks for real images/video embeds when ready.
 - Edit service copy directly inside `index.html`.
-
----
-
-# FOFV Studio
-
-An internal tool for generating and editing listing media with AI: text-to-image,
-photo enhancement and upscaling, sky replacement and twilight conversion, virtual
-staging, and image-to-video.
-
-It needs a server, because the fal API key must never reach the browser — so it
-**cannot** run on GitHub Pages alongside the marketing site. See
-**[`studio/README.md`](studio/README.md)** for setup, deployment, and how to add
-models to the catalogue.
-
-```bash
-cd studio
-npm install
-cp .env.example .env.local   # add FAL_KEY, STUDIO_PASSWORD, SESSION_SECRET
-npm run dev
-```

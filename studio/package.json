@@ -1,8 +1,8 @@
 {
-  "name": "fofv-studio",
+  "name": "fabrik-web",
   "version": "0.1.0",
   "private": true,
-  "description": "Four One Five Visuals — AI asset creation platform powered by fal.ai",
+  "description": "Fabrik — AI asset creation platform powered by fal.ai",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

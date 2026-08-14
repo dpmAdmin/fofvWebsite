@@ -13,9 +13,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "FOFV Studio | Four One Five Visuals",
+  title: "Fabrik | AI asset creation",
   description:
-    "Internal AI asset creation studio for Four One Five Visuals, powered by fal.ai.",
+    "Internal AI asset creation studio, powered by fal.ai.",
   robots: { index: false, follow: false },
 };
 

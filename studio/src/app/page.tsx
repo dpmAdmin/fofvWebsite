@@ -165,9 +165,9 @@ export default function StudioPage() {
         <div className="mx-auto flex max-w-[1600px] items-center gap-4 px-5 py-3">
           <div className="flex items-center gap-2.5">
             <span className="grid size-8 place-items-center rounded-lg bg-chalk text-sm font-extrabold tracking-tighter text-ink-950">
-              Fv
+              Fa
             </span>
-            <span className="hidden text-sm font-bold tracking-tight sm:block">FOFV Studio</span>
+            <span className="hidden text-sm font-bold tracking-tight sm:block">Fabrik</span>
           </div>
 
           <nav className="ml-2 flex gap-1" aria-label="Sections">
@@ -216,7 +216,7 @@ export default function StudioPage() {
           stable top-level heading. This is also what Next's route announcer
           reads out to screen readers after navigation.
         */}
-        <h1 className="sr-only">FOFV Studio</h1>
+        <h1 className="sr-only">Fabrik</h1>
 
         {tab === "generate" ? (
           <div className="grid gap-6 lg:grid-cols-[240px_minmax(0,380px)_minmax(0,1fr)]">

@@ -1,6 +1,6 @@
-# FOFV Studio
+# Fabrik (web)
 
-An internal AI asset creation platform for Four One Five Visuals, built on
+Fabrik on the web: an internal AI asset creation platform built on
 [fal.ai](https://fal.ai). Generate marketing imagery, enhance and edit listing
 photos, virtually stage empty rooms, and turn stills into cinematic clips — all
 from one place, with every result saved to a local library.
