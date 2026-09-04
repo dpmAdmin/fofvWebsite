@@ -17,6 +17,7 @@ import {
 import { MODELS, buildInput, getModel } from "@/lib/models";
 import type { Asset, JobPhase, ModelDef } from "@/lib/types";
 import { cn } from "@/lib/utils";
+import { APP_VERSION } from "@/lib/version";
 
 type Tab = "generate" | "library";
 
@@ -199,14 +200,17 @@ export default function StudioPage() {
             </span>
           )}
 
-          <form action="/api/auth/logout" method="post" className="ml-auto">
-            <button
-              type="submit"
-              className="text-xs font-semibold text-chalk-faint transition hover:text-chalk"
-            >
-              Sign out
-            </button>
-          </form>
+          <div className="ml-auto flex items-center gap-4">
+            <span className="text-xs text-chalk-faint">v{APP_VERSION}</span>
+            <form action="/api/auth/logout" method="post">
+              <button
+                type="submit"
+                className="text-xs font-semibold text-chalk-faint transition hover:text-chalk"
+              >
+                Sign out
+              </button>
+            </form>
+          </div>
         </div>
       </header>
 
