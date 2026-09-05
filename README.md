@@ -1,51 +1,45 @@
 # Four One Five Visuals
 
-This repository holds three things:
+The public marketing site for Four One Five Visuals — a static site served by
+GitHub Pages from this repository's root.
 
-| | What it is | Where it runs |
-| --- | --- | --- |
-| **Marketing site** (repo root) | The public static site | GitHub Pages |
-| **[`Fabrik/`](Fabrik/)** | Fabrik — native iOS + macOS asset creation app | Xcode → your devices |
-| **[`studio/`](studio/)** | Fabrik on the web — the same tool as a Next.js app | Vercel (or any Node host) |
+- `index.html` — page structure and copy
+- `styles.css` — visual design and responsive layout
+- `script.js` — mobile menu and automatic footer year
 
-They are independent. Adding Fabrik changed nothing about how the marketing site
-builds or deploys.
-
-**Fabrik** is the AI asset creation tool: generate imagery, enhance and upscale
-photos, replace skies, virtually stage empty rooms, and turn stills into
-cinematic clips — all through [fal.ai](https://fal.ai).
-
-- The **native app** uses *your own* fal key, stored in the Keychain. No server,
-  no hosting. → [`Fabrik/README.md`](Fabrik/README.md)
-  <br>⚠️ It has never been compiled — it was written without access to Xcode. See its README.
-- The **web app** keeps one fal key server-side behind a password, for people who
-  should not need their own fal account. → [`studio/README.md`](studio/README.md)
-
----
-
-# Marketing site
-
-A simple static website for Four One Five Visuals.
-
-## Files
-
-- `index.html` - page structure and copy
-- `styles.css` - visual design and responsive layout
-- `script.js` - mobile menu and automatic footer year
-
-## GitHub Pages Setup
-
-1. Create a new GitHub repository.
-2. Upload these files to the root of the repo.
-3. Go to **Settings > Pages**.
-4. Under **Build and deployment**, choose **Deploy from a branch**.
-5. Select the `main` branch and `/root` folder.
-6. Save.
-
-Your site will publish at your GitHub Pages URL. You can later connect `fouronefivevisuals.com` through your domain DNS settings.
-
-## Easy edits
+## Editing
 
 - Replace the email in `index.html` near the contact section.
 - Swap placeholder visual blocks for real images/video embeds when ready.
 - Edit service copy directly inside `index.html`.
+
+## GitHub Pages
+
+**Settings → Pages → Build and deployment → Deploy from a branch**, `main` /
+root. The site publishes at the GitHub Pages URL, and
+`fouronefivevisuals.com` points at it through DNS.
+
+Nothing here needs a build step: the three files above *are* the site.
+
+---
+
+## Looking for Fabrik?
+
+**Fabrik lives in its own repository: [`dpmAdmin/fabrik`](https://github.com/dpmAdmin/fabrik).**
+That is the only place it is developed, and the only place it deploys from
+(Vercel → `fabrik-ebon.vercel.app`).
+
+This repository used to carry two early copies of it — a `studio/` Next.js app
+and a `Fabrik/` Xcode project. Both were snapshots taken *before* Fabrik was
+split out, and both were superseded: everything in them was carried over to
+`dpmAdmin/fabrik`, which has since gained batch RAW processing, exposure
+fusion, the real-estate colour grading pipeline and much else that never
+existed here. Keeping stale duplicates around only invited edits landing in the
+copy that nothing deploys, so they were removed in favour of the one real home.
+
+They remain in this repository's history if you ever want to read them:
+
+```sh
+git log --oneline -- studio Fabrik   # the commits that touched them
+git show 4a30675                     # the last substantive change
+```
